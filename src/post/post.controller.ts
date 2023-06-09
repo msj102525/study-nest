@@ -11,7 +11,7 @@ export class PostController {
 
   @Post()
   @UseGuards(AuthGuard)
-  create(@Req() req: Request, @Body() createPostDto: CreatePostDto) {
+  createPost(@Req() req: Request, @Body() createPostDto: CreatePostDto) {
     const user: any = req.user;
     const userId = user.id;
     createPostDto.userId = userId;
@@ -26,15 +26,15 @@ export class PostController {
 
   @Get('user')
   @UseGuards(AuthGuard)
-  findOne(@Req() req: Request) {
+  findPostByUserId(@Req() req: Request) {
     const user: any = req.user;
     const userId = user.id;
     return this.postService.findPostByUserId(userId);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
-    return this.postService.update(+id, updatePostDto);
+  updatePost(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
+    return this.postService.updatePost(+id, updatePostDto);
   }
 
   @Delete(':id')

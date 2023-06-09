@@ -15,6 +15,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: Payload, done: VerifiedCallback): Promise<any> {
+    console.log(payload);
     const user = await this.authService.tokenValidateUser(payload);
 
     if (!user) {

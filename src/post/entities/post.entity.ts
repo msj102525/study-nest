@@ -23,7 +23,7 @@ export class Post extends BaseEntity {
     name: 'user_id',
   })
   @ManyToOne(() => User, (user) => user.id)
-  user_id: User;
+  userId: User;
 
   @CreateDateColumn()
   createdAt: Date;

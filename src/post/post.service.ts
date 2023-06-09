@@ -3,7 +3,7 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Post } from './entities/post.entity';
-import { Equal, FindOneOptions, Repository } from 'typeorm';
+import { Equal, Repository } from 'typeorm';
 
 @Injectable()
 export class PostService {
@@ -24,16 +24,26 @@ export class PostService {
   async findPostByUserId(userId: number): Promise<Post[]> {
     console.log(userId);
     return await this.postRepository.find({
-      where: { user_id: Equal(userId) },
+      where: { userId: Equal(userId) },
       relations: ['user_id'],
     });
   }
 
-  update(id: number, updatePostDto: UpdatePostDto) {
-    return `This action updates a #${id} post`;
+  async updatePost(id: number, updatePostDto: UpdatePostDto) {
+    const post = await this.postRepository.findOne({ where: { id } });
+
+    if (!post) throw new Error('POST_NOT_FOUND');
+
+    Object.assign(post, updatePostDto);
+    return this.postRepository.save(post);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} post`;
+  async remove(id: number) {
+    const post = await this.postRepository.findOne({ where: { id } });
+
+    if (!post) throw new Error('POST_NOT_FOUND');
+
+    await this.postRepository.remove(post);
+    return `POST_ID:${id} POST_DELETED!`;
   }
 }
