@@ -6,6 +6,8 @@ import { CatsModule } from './cats/cats.module';
 import { Cat } from './cats/entities/cat.entity';
 import { User } from './auth/entities/users.entity';
 import { AuthModule } from './auth/auth.module';
+import { PostModule } from './post/post.module';
+import { Post } from './post/entities/post.entity';
 
 @Module({
   imports: [
@@ -16,12 +18,13 @@ import { AuthModule } from './auth/auth.module';
       username: 'root',
       password: 'DoorWinBell',
       database: 'nest_test',
-      entities: [Cat, User],
+      entities: [Cat, User, Post],
       synchronize: true,
       logging: false,
     }),
     CatsModule,
     AuthModule,
+    PostModule,
   ],
   controllers: [AppController],
   providers: [AppService],

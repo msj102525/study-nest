@@ -26,7 +26,9 @@ export class CatsService {
 
   async update(id: number, updateCatDto: UpdateCatDto) {
     const cat = await this.catRepository.findOne({ where: { id } });
+
     if (!cat) throw new Error('CAT_NOT_FOUND');
+
     Object.assign(cat, updateCatDto);
     return this.catRepository.save(cat);
   }

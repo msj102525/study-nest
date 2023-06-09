@@ -2,10 +2,13 @@ import { HttpException, HttpStatus, Injectable, UnauthorizedException } from '@n
 import { UserService } from './user.service';
 import { UserDto } from './dto/user.dto';
 import * as bcrypt from 'bcrypt';
+import { Payload } from './security/payload.interface';
+import { User } from './entities/users.entity';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService, private jwtService: JwtService) {}
 
   async registerUser(newUser: UserDto): Promise<UserDto> {
     console.log(newUser.email);
@@ -18,9 +21,9 @@ export class AuthService {
     return await this.userService.save(newUser);
   }
 
-  async validateUser(userDto: UserDto): Promise<{} | undefined> {
+  async validateUser(userDto: UserDto): Promise<{ accessToken: string; user: {} } | undefined> {
     console.log(userDto);
-    let userFind: UserDto = await this.userService.findByFiedls({
+    let userFind: User = await this.userService.findByFiedls({
       where: { email: userDto.email },
     });
     const validatePassword = await bcrypt.compare(userDto.password, userFind.password);
@@ -28,8 +31,18 @@ export class AuthService {
     if (!userFind || !validatePassword) {
       throw new UnauthorizedException();
     }
+    const payload: Payload = { id: userFind.id, username: userFind.username };
     const user = { user: userFind, message: '성공!' };
 
-    return { user: userFind, message: 'Success' };
+    return {
+      user: user,
+      accessToken: this.jwtService.sign(payload),
+    };
+  }
+
+  async tokenValidateUser(payload: Payload): Promise<UserDto | undefined> {
+    return await this.userService.findByFiedls({
+      where: { id: payload.id },
+    });
   }
 }

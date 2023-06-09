@@ -12,7 +12,7 @@ export class UserService {
     private userRepositroy: Repository<User>,
   ) {}
 
-  async findByFiedls(option: FindOneOptions<UserDto>): Promise<UserDto | undefined> {
+  async findByFiedls(option: FindOneOptions<User>): Promise<User | undefined> {
     return await this.userRepositroy.findOne(option);
   }
 
