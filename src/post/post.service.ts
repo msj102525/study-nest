@@ -25,7 +25,7 @@ export class PostService {
     console.log(userId);
     return await this.postRepository.find({
       where: { userId: Equal(userId) },
-      relations: ['user_id'],
+      relations: ['userId'],
     });
   }
 
@@ -38,7 +38,7 @@ export class PostService {
     return this.postRepository.save(post);
   }
 
-  async remove(id: number) {
+  async removePost(id: number) {
     const post = await this.postRepository.findOne({ where: { id } });
 
     if (!post) throw new Error('POST_NOT_FOUND');

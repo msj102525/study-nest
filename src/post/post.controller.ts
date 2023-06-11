@@ -29,7 +29,8 @@ export class PostController {
   findPostByUserId(@Req() req: Request) {
     const user: any = req.user;
     const userId = user.id;
-    return this.postService.findPostByUserId(userId);
+    const result = this.postService.findPostByUserId(userId);
+    console.log(result);
   }
 
   @Patch(':id')
@@ -38,7 +39,7 @@ export class PostController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.postService.remove(+id);
+  removePost(@Param('id') id: string) {
+    return this.postService.removePost(+id);
   }
 }
