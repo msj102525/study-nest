@@ -1,73 +1,73 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
-
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
-
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Installation
+## Read.me
 
 ```bash
-$ npm install
+
 ```
 
-## Running the app
+## User
 
 ```bash
-# development
-$ npm run start
+$ user CR
 
-# watch mode
-$ npm run start:dev
+# 회원가입
+# POST: localhost:3000/auth/register
+$
+    "username": "username",
+    "email": "email@email.com",
+    "password": "password"
 
-# production mode
-$ npm run start:prod
+# 로그인
+# POST: localhost:3000/auth/login
+$
+  "email": "msj10@email.com",
+  "password": "Tmdwhd0711!"
+
+# 토큰을 통해 로그인한 유저의 정보 가져오기
+# GET: localhost:3000/auth/authentcate
+$ postman -> Authorization 클릭 -> Type: Bearer Token -> 로그인한 토큰 ctrl + c, ctrl + v -> get요청
+
 ```
 
-## Test
+## Post
 
 ```bash
-# unit tests
+$ post CRUD
+
+# post 등록 (CREATE)
+# POST: localhost:3000/post
+# 로그인 필요 토큰 담아서 글쓰면 그 유저의 id값이 post table의 user_id column에 추가
+$ body ->
+          "title":"DoorWinBell10",
+          "content": "가을 하늘 공활한데 높고 구름 없이"
+
+
+# 전체 post get (READ)
+# GET: localhost:3000/post
+$ post정보와 post 주인의 정보
+
+# user의 포스트 가져오기 (READ)
+# 로그인 필요, 토큰 담아서 요청
+# GET: localhost:3000/post/user
+$ 로그인 한 유저의 post가져오기
+
+# post 수정 (UPDATE)
+# PATCH: localhost:3000/post/:id
+# post id로 조회후 body에 수정할 내용
+$
+    "title": "수정할 내용",
+    "content": "수정할 내용"
+
+# post 삭제 (DELETE)
+# DELETE: localhost:3000/post/:id
+# post id로 조회후 해당 post 삭제
+$
+    "title": "수정할 내용",
+    "content": "수정할 내용"
+
+```
+
+# TEST
+
+```bash
 $ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
 ```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
