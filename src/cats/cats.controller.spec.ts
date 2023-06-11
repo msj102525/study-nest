@@ -29,11 +29,17 @@ describe('CatsController', () => {
 
   it('should be defined', async () => {
     jest.spyOn(service, 'findAll').mockResolvedValue([]);
+    jest.spyOn(service, 'findOne').mockResolvedValue({
+      id: 1,
+      name: '1번고양이',
+      age: 1,
+      breed: '1종',
+    });
 
-    const result = await controller.findAll();
+    const resultFindAll = await controller.findAll();
 
     expect(controller).toBeDefined();
     expect(service).toBeDefined();
-    expect(result).toEqual([]);
+    expect(resultFindAll).toEqual([]);
   });
 });

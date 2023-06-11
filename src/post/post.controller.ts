@@ -3,7 +3,7 @@ import { Request } from 'express';
 import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
-import { AuthGuard } from 'src/auth/security/auth.guard';
+import { AuthGuard } from '../auth//security/auth.guard';
 
 @Controller('post')
 export class PostController {
@@ -30,7 +30,7 @@ export class PostController {
     const user: any = req.user;
     const userId = user.id;
     const result = this.postService.findPostByUserId(userId);
-    console.log(result);
+    return result;
   }
 
   @Patch(':id')
