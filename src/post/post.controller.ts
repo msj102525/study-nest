@@ -20,8 +20,8 @@ export class PostController {
   }
 
   @Get()
-  findAll() {
-    return this.postService.findAll();
+  findAllPost() {
+    return this.postService.findAllPost();
   }
 
   @Get('user')

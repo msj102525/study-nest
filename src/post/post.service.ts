@@ -17,8 +17,8 @@ export class PostService {
     return await this.postRepository.save(createPostDto);
   }
 
-  async findAll() {
-    return await this.postRepository.find();
+  async findAllPost() {
+    return await this.postRepository.find({ relations: ['userId'] });
   }
 
   async findPostByUserId(userId: number): Promise<Post[]> {
