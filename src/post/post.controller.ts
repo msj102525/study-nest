@@ -4,6 +4,7 @@ import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { AuthGuard } from '../auth//security/auth.guard';
+import { Posts } from './entities/post.entity';
 
 @Controller('post')
 export class PostController {
@@ -11,7 +12,7 @@ export class PostController {
 
   @Post()
   @UseGuards(AuthGuard)
-  createPost(@Req() req: Request, @Body() createPostDto: CreatePostDto) {
+  createPost(@Req() req: Request, @Body() createPostDto: CreatePostDto): Promise<Posts> {
     const user: any = req.user;
     const userId = user.id;
     createPostDto.userId = userId;
@@ -20,13 +21,13 @@ export class PostController {
   }
 
   @Get()
-  findAllPost() {
+  findAllPost(): Promise<Posts[]> {
     return this.postService.findAllPost();
   }
 
   @Get('user')
   @UseGuards(AuthGuard)
-  findPostByUserId(@Req() req: Request) {
+  findPostByUserId(@Req() req: Request): Promise<Posts[]> {
     const user: any = req.user;
     const userId = user.id;
     const result = this.postService.findPostByUserId(userId);
@@ -34,12 +35,12 @@ export class PostController {
   }
 
   @Patch(':id')
-  updatePost(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
+  updatePost(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto): Promise<Posts> {
     return this.postService.updatePost(+id, updatePostDto);
   }
 
   @Delete(':id')
-  removePost(@Param('id') id: string) {
+  removePost(@Param('id') id: string): Promise<string> {
     return this.postService.removePost(+id);
   }
 }

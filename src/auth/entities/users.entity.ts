@@ -14,3 +14,11 @@ export class User extends BaseEntity {
   @Column()
   password: string;
 }
+
+export interface LoginResponse extends User {
+  user: {
+    user: User;
+    message: string;
+  };
+  accessToken: string;
+}

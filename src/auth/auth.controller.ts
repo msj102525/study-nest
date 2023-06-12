@@ -9,23 +9,23 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('/register')
-  async registerAccount(@Req() req: Request, @Body() UserDto: UserDto): Promise<any> {
-    return await this.authService.registerUser(UserDto);
+  async registerAccount(@Req() req: Request, @Body() userDto: UserDto): Promise<UserDto> {
+    return await this.authService.registerUser(userDto);
   }
 
   @Post('/login')
   async login(@Body() userDto: UserDto, @Res() res: Response): Promise<any> {
-    const user = await this.authService.validateUser(userDto);
-    console.log(user);
+    const user: { accessToken: string; user: {} } = await this.authService.validateUser(userDto);
+    // console.log(user);
     res.setHeader('Authorization', user.accessToken);
     return res.json(user);
   }
 
   @Get('/authentcate')
   @UseGuards(AuthGuard)
-  isAuthenticated(@Req() req: Request): any {
+  isAuthenticated(@Req() req: Request): Promise<any> {
     const user: any = req.user;
-    console.log(user.id);
+    // console.log(user.id);
     return user;
   }
 }

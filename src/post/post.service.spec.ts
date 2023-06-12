@@ -1,32 +1,32 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PostService } from './post.service';
 import { Repository } from 'typeorm';
-import { Post } from './entities/post.entity';
+import { Posts } from './entities/post.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { User } from '../auth/entities/users.entity';
 
 describe('PostService', () => {
   let service: PostService;
-  let postRepository: Repository<Post>;
+  let postRepository: Repository<Posts>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         PostService,
         {
-          provide: getRepositoryToken(Post),
+          provide: getRepositoryToken(Posts),
           useClass: Repository,
         },
       ],
     }).compile();
 
     service = module.get<PostService>(PostService);
-    postRepository = module.get<Repository<Post>>(getRepositoryToken(Post));
+    postRepository = module.get<Repository<Posts>>(getRepositoryToken(Posts));
   });
 
   it('should be defined', async () => {
-    const posts: Post[] = [
-      Object.assign(new Post(), {
+    const posts: Posts[] = [
+      Object.assign(new Posts(), {
         id: 1,
         title: 'title1',
         content: 'content1',
@@ -39,7 +39,7 @@ describe('PostService', () => {
           password: 'password1',
         }),
       }),
-      Object.assign(new Post(), {
+      Object.assign(new Posts(), {
         id: 2,
         title: 'title2',
         content: 'content2',
@@ -52,7 +52,7 @@ describe('PostService', () => {
           password: 'password2',
         }),
       }),
-      Object.assign(new Post(), {
+      Object.assign(new Posts(), {
         id: 3,
         title: 'title3',
         content: 'content3',
@@ -67,7 +67,7 @@ describe('PostService', () => {
       }),
     ];
 
-    const updatePost: Post = Object.assign(new Post(), {
+    const post: Posts = Object.assign(new Posts(), {
       id: 1,
       title: '수정수정수정',
       content: '이 기상과 이 맘으로 충성을 다 하여',
@@ -83,7 +83,9 @@ describe('PostService', () => {
 
     jest.spyOn(service, 'findAllPost').mockResolvedValue(posts);
     jest.spyOn(service, 'findPostByUserId').mockResolvedValue(posts);
-    jest.spyOn(service, 'updatePost').mockResolvedValue(updatePost);
+    jest.spyOn(service, 'updatePost').mockResolvedValue(post);
+    jest.spyOn(service, 'createPost').mockResolvedValue(post);
+    jest.spyOn(service, 'removePost').mockResolvedValue('string');
 
     const result = await service.findAllPost();
 

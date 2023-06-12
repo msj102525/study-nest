@@ -2,7 +2,7 @@ import { User } from '../../auth/entities/users.entity';
 import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity('post')
-export class Post extends BaseEntity {
+export class Posts extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 

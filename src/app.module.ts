@@ -7,7 +7,7 @@ import { Cat } from './cats/entities/cat.entity';
 import { User } from './auth/entities/users.entity';
 import { AuthModule } from './auth/auth.module';
 import { PostModule } from './post/post.module';
-import { Post } from './post/entities/post.entity';
+import { Posts } from './post/entities/post.entity';
 
 @Module({
   imports: [
@@ -18,7 +18,7 @@ import { Post } from './post/entities/post.entity';
       username: 'root',
       password: 'DoorWinBell',
       database: 'nest_test',
-      entities: [Cat, User, Post],
+      entities: [Cat, User, Posts],
       synchronize: true,
       logging: false,
     }),

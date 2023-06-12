@@ -2,26 +2,26 @@ import { Injectable } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Post } from './entities/post.entity';
+import { Posts } from './entities/post.entity';
 import { Equal, Repository } from 'typeorm';
 
 @Injectable()
 export class PostService {
   constructor(
-    @InjectRepository(Post)
-    private postRepository: Repository<Post>,
+    @InjectRepository(Posts)
+    private postRepository: Repository<Posts>,
   ) {}
 
-  async createPost(createPostDto: CreatePostDto) {
+  async createPost(createPostDto: CreatePostDto): Promise<Posts> {
     console.log(createPostDto);
     return await this.postRepository.save(createPostDto);
   }
 
-  async findAllPost() {
+  async findAllPost(): Promise<Posts[]> {
     return await this.postRepository.find({ relations: ['userId'] });
   }
 
-  async findPostByUserId(userId: number): Promise<Post[]> {
+  async findPostByUserId(userId: number): Promise<Posts[]> {
     console.log(userId);
     return await this.postRepository.find({
       where: { userId: Equal(userId) },
@@ -29,7 +29,7 @@ export class PostService {
     });
   }
 
-  async updatePost(id: number, updatePostDto: UpdatePostDto) {
+  async updatePost(id: number, updatePostDto: UpdatePostDto): Promise<Posts> {
     const post = await this.postRepository.findOne({ where: { id } });
 
     if (!post) throw new Error('POST_NOT_FOUND');
@@ -38,7 +38,7 @@ export class PostService {
     return this.postRepository.save(post);
   }
 
-  async removePost(id: number) {
+  async removePost(id: number): Promise<string> {
     const post = await this.postRepository.findOne({ where: { id } });
 
     if (!post) throw new Error('POST_NOT_FOUND');

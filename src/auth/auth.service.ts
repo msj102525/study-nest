@@ -11,7 +11,7 @@ export class AuthService {
   constructor(private userService: UserService, private jwtService: JwtService) {}
 
   async registerUser(newUser: UserDto): Promise<UserDto> {
-    console.log(newUser.email);
+    // console.log(newUser.email);
     let userFind: UserDto = await this.userService.findByFiedls({
       where: { email: newUser.email },
     });
@@ -22,7 +22,7 @@ export class AuthService {
   }
 
   async validateUser(userDto: UserDto): Promise<{ accessToken: string; user: {} } | undefined> {
-    console.log(userDto);
+    // console.log(userDto);
     let userFind: User = await this.userService.findByFiedls({
       where: { email: userDto.email },
     });
