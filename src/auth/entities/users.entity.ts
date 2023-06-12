@@ -15,10 +15,7 @@ export class User extends BaseEntity {
   password: string;
 }
 
-export interface LoginResponse extends User {
-  user: {
-    user: User;
-    message: string;
-  };
-  accessToken: string;
+export interface Payload extends Partial<User> {
+  id: number;
+  username: string;
 }

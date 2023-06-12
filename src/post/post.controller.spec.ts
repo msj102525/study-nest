@@ -6,6 +6,8 @@ import { Posts } from './entities/post.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { User } from '../auth/entities/users.entity';
 import { Request } from 'express';
+import { ParamData } from '@nestjs/common';
+import exp from 'constants';
 
 describe('PostController', () => {
   let controller: PostController;
@@ -28,13 +30,14 @@ describe('PostController', () => {
     service = module.get<PostService>(PostService);
     postRepository = module.get<Repository<Posts>>(getRepositoryToken(Posts));
   });
+
   const posts: Posts[] = [
     Object.assign(new Posts(), {
       id: 1,
       title: 'title1',
       content: 'content1',
-      createdAt: new Date('2023-06-09T06:31:18.140Z'),
-      updatedAt: new Date('2023-06-09T06:31:18.140Z'),
+      createdAt: new Date(),
+      updatedAt: new Date(),
       userId: Object.assign(new User(), {
         id: 1,
         username: 'username1',
@@ -46,8 +49,8 @@ describe('PostController', () => {
       id: 2,
       title: 'title2',
       content: 'content2',
-      createdAt: new Date('2023-06-09T06:32:28.240Z'),
-      updatedAt: new Date('2023-06-09T06:32:28.240Z'),
+      createdAt: new Date(),
+      updatedAt: new Date(),
       userId: Object.assign(new User(), {
         id: 2,
         username: 'username2',
@@ -59,8 +62,8 @@ describe('PostController', () => {
       id: 3,
       title: 'title3',
       content: 'content3',
-      createdAt: new Date('2023-06-09T06:33:38.340Z'),
-      updatedAt: new Date('2023-06-09T06:33:38.340Z'),
+      createdAt: new Date(),
+      updatedAt: new Date(),
       userId: Object.assign(new User(), {
         id: 3,
         username: 'username3',
@@ -69,6 +72,26 @@ describe('PostController', () => {
       }),
     }),
   ];
+
+  const userId = 1;
+  const param: ParamData = 1;
+  const request: Request = { user: { id: userId } } as any;
+
+  const post: Posts = Object.assign(new Posts(), {
+    title: 'title1',
+    content: 'content1',
+  });
+
+  describe('create', () => {
+    it('should return created post', async () => {
+      jest.spyOn(service, 'createPost').mockResolvedValue(post);
+
+      const result = await controller.createPost(request, post);
+
+      expect(result).toBe(post);
+      expect(service.createPost).toHaveBeenCalledWith(post);
+    });
+  });
 
   describe('findPost', () => {
     it('should return an array of posts', async () => {
@@ -81,15 +104,38 @@ describe('PostController', () => {
     });
 
     it('should return array of user posts', async () => {
-      const userId = 1;
-      const request: Request = { user: { id: userId } } as any;
-
       jest.spyOn(service, 'findPostByUserId').mockResolvedValue(posts);
 
       const result = await controller.findPostByUserId(request);
 
       expect(result).toBe(posts);
       expect(service.findPostByUserId).toHaveBeenCalledWith(userId);
+    });
+  });
+
+  describe('update', () => {
+    it('should return updated post', async () => {
+      jest.spyOn(service, 'updatePost').mockResolvedValue(post);
+
+      const updatedPost = { ...post, id: param };
+
+      const result = await controller.updatePost(param, updatedPost);
+
+      expect(result).toEqual(post);
+      expect(service.updatePost).toHaveBeenCalledWith(param, updatedPost);
+    });
+  });
+
+  describe('delete', () => {
+    it('should retun string', async () => {
+      const removeString = `POST_ID:${param} POST_DELETED!`;
+
+      jest.spyOn(service, 'removePost').mockResolvedValue(removeString);
+
+      const result = await controller.removePost(param);
+
+      expect(result).toEqual(removeString);
+      expect(service.removePost).toHaveBeenCalledWith(param);
     });
   });
 });

@@ -2,8 +2,7 @@ import { HttpException, HttpStatus, Injectable, UnauthorizedException } from '@n
 import { UserService } from './user.service';
 import { UserDto } from './dto/user.dto';
 import * as bcrypt from 'bcrypt';
-import { Payload } from './security/payload.interface';
-import { User } from './entities/users.entity';
+import { User, Payload } from './entities/users.entity';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()

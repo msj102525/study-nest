@@ -12,35 +12,35 @@ export class PostController {
 
   @Post()
   @UseGuards(AuthGuard)
-  createPost(@Req() req: Request, @Body() createPostDto: CreatePostDto): Promise<Posts> {
+  async createPost(@Req() req: Request, @Body() createPostDto: CreatePostDto): Promise<Posts> {
     const user: any = req.user;
     const userId = user.id;
     createPostDto.userId = userId;
-    console.log(createPostDto.userId);
-    return this.postService.createPost(createPostDto);
+    // console.log(createPostDto);
+    return await this.postService.createPost(createPostDto);
   }
 
   @Get()
-  findAllPost(): Promise<Posts[]> {
-    return this.postService.findAllPost();
+  async findAllPost(): Promise<Posts[]> {
+    return await this.postService.findAllPost();
   }
 
   @Get('user')
   @UseGuards(AuthGuard)
-  findPostByUserId(@Req() req: Request): Promise<Posts[]> {
+  async findPostByUserId(@Req() req: Request): Promise<Posts[]> {
     const user: any = req.user;
     const userId = user.id;
-    const result = this.postService.findPostByUserId(userId);
+    const result = await this.postService.findPostByUserId(userId);
     return result;
   }
 
   @Patch(':id')
-  updatePost(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto): Promise<Posts> {
-    return this.postService.updatePost(+id, updatePostDto);
+  async updatePost(@Param('id') id: number, @Body() updatePostDto: UpdatePostDto): Promise<Posts> {
+    return await this.postService.updatePost(id, updatePostDto);
   }
 
   @Delete(':id')
-  removePost(@Param('id') id: string): Promise<string> {
-    return this.postService.removePost(+id);
+  async removePost(@Param('id') id: number): Promise<string> {
+    return await this.postService.removePost(id);
   }
 }
