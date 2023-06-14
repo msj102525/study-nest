@@ -3,7 +3,7 @@ import { CreateTagTypeDto } from '../dtos/create-tag_type.dto';
 import { UpdateTagTypeDto } from '../dtos/update-tag_type.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TagTypes } from '../entities/tag_type.entity';
-import { FindOneOptions, Repository } from 'typeorm';
+import { Equal, FindOneOptions, Repository } from 'typeorm';
 import { ApiResponse, statusMessage } from 'src/common/response/api.response';
 
 @Injectable()
@@ -48,7 +48,8 @@ export class TagTypesService {
   async findAllTagTpyesByStatus(status: number): Promise<TagTypes[]> {
     console.log(status);
     const tagTypesArray = await this.repository.find({
-      where: { tagStateId: status },
+      relations: ['tagStateId'],
+      where: { tagStateId: Equal(status) },
     });
 
     if (tagTypesArray.length < 1) {

@@ -24,7 +24,7 @@ import { TagStatus } from './tag_types/entities/tag_state.entity';
       database: 'nest_test',
       entities: [Cat, User, Posts, TagTypes, Tags, TagStatus],
       synchronize: true,
-      logging: true,
+      logging: false,
     }),
     CatsModule,
     AuthModule,

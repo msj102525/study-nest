@@ -11,7 +11,7 @@ export class TagTypes extends CommonEntity {
   @OneToMany(() => Tags, (tags) => tags.tagTypeId)
   tags: Tags[];
 
-  @ManyToOne(() => TagStatus, (tagState) => tagState.id)
+  @ManyToOne(() => TagStatus, (tagState) => tagState.tagTypes, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'tag_state_id' })
   public tagStateId: number;
 }

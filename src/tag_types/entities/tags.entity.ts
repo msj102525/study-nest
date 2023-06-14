@@ -3,13 +3,13 @@ import { TagTypes } from './tag_type.entity';
 
 @Entity('tags')
 export class Tags {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn({ name: 'id' })
+  tagId: number;
 
   @Column({ name: 'tag_name' })
   tagName: string;
 
-  @ManyToOne(() => TagTypes, (tag_types) => tag_types.id)
+  @ManyToOne(() => TagTypes, (tagTypes) => tagTypes.tags, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'tag_type_id' })
-  tagTypeId: number;
+  tagTypeId: TagTypes;
 }
