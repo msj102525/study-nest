@@ -7,7 +7,6 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { User } from '../auth/entities/users.entity';
 import { Request } from 'express';
 import { ParamData } from '@nestjs/common';
-import exp from 'constants';
 
 describe('PostController', () => {
   let controller: PostController;

@@ -15,7 +15,7 @@ export class AuthService {
       where: { email: newUser.email },
     });
     if (userFind) {
-      throw new HttpException('Username aleady used!', HttpStatus.BAD_REQUEST);
+      throw new HttpException('Username already used!', HttpStatus.BAD_REQUEST);
     }
     return await this.userService.save(newUser);
   }

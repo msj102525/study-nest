@@ -8,6 +8,10 @@ import { User } from './auth/entities/users.entity';
 import { AuthModule } from './auth/auth.module';
 import { PostModule } from './post/post.module';
 import { Posts } from './post/entities/post.entity';
+import { TagTypesModule } from './tag_types/tag_types.module';
+import { TagTypes } from './tag_types/entities/tag_type.entity';
+import { Tags } from './tag_types/entities/tags.entity';
+import { TagStatus } from './tag_types/entities/tag_state.entity';
 
 @Module({
   imports: [
@@ -18,13 +22,14 @@ import { Posts } from './post/entities/post.entity';
       username: 'root',
       password: 'DoorWinBell',
       database: 'nest_test',
-      entities: [Cat, User, Posts],
+      entities: [Cat, User, Posts, TagTypes, Tags, TagStatus],
       synchronize: true,
-      logging: false,
+      logging: true,
     }),
     CatsModule,
     AuthModule,
     PostModule,
+    TagTypesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
