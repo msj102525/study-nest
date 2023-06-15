@@ -15,7 +15,7 @@ export class TagTypesController {
   }
 
   @Get(':status')
-  async findAllPublic(@Param('status') status: number) {
+  async findAllTagTpyesByStatus(@Param('status') status: number) {
     const tagTypes = await this.tagTypesService.findAllTagTpyesByStatus(status);
     return new ApiResponse(statusMessage.s, HttpStatus.OK, tagTypes);
   }
@@ -27,7 +27,7 @@ export class TagTypesController {
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: number) {
+  async removeTagType(@Param('id') id: number) {
     const deleteTagType = await this.tagTypesService.removeTagType(id);
     return new ApiResponse(statusMessage.s, HttpStatus.NO_CONTENT, deleteTagType);
   }

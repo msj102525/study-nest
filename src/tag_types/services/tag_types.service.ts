@@ -61,7 +61,10 @@ export class TagTypesService {
   }
 
   async updateTagType(id: number, updateTagTypeDto: UpdateTagTypeDto): Promise<TagTypes> {
-    const tagTypeFindById = await this.isExistTagType({ where: { id } });
+    const tagTypeFindById = await this.isExistTagType({
+      relations: ['tagStateId'],
+      where: { id },
+    });
 
     Object.assign(tagTypeFindById, updateTagTypeDto);
     return await this.repository.save(tagTypeFindById);
