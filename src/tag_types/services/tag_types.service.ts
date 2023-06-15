@@ -10,7 +10,7 @@ import { ApiResponse, statusMessage } from 'src/common/response/api.response';
 export class TagTypesService {
   constructor(@InjectRepository(TagTypes) private repository: Repository<TagTypes>) {}
 
-  async isExistTagType(option: FindOneOptions<TagTypes>): Promise<TagTypes> {
+  async isExistTagTypeById(option: FindOneOptions<TagTypes>): Promise<TagTypes> {
     const tagTypeFindById = await this.repository.findOne(option);
 
     console.log(tagTypeFindById);
@@ -22,25 +22,34 @@ export class TagTypesService {
     return tagTypeFindById;
   }
 
-  async createTagType(createTagTypeDto: CreateTagTypeDto): Promise<TagTypes> {
+  async isExistTagTypeByBody(createTagTypeDto: CreateTagTypeDto): Promise<TagTypes> {
     const { tagType, tagStateId } = createTagTypeDto;
 
     const tagTypeFind: TagTypes | undefined = await this.repository.findOne({
+      relations: ['tagStateId'],
       where: {
-        tagStateId: tagStateId,
+        tagStateId: Equal(tagStateId),
         tagType: tagType,
       },
     });
+
+    return tagTypeFind;
+  }
+
+  async createTagType(createTagTypeDto: CreateTagTypeDto): Promise<TagTypes> {
+    const tagTypeFind = await this.isExistTagTypeByBody(createTagTypeDto);
 
     if (tagTypeFind) {
       const errorMessage = { message: 'TAG_TYPE_ALREADY_USED' };
       throw new HttpException(new ApiResponse(statusMessage.f, HttpStatus.BAD_REQUEST, errorMessage), HttpStatus.BAD_REQUEST);
     }
 
-    const tagTypeResult = this.repository.save({
+    await this.repository.save({
       tagType: createTagTypeDto.tagType,
       tagStateId: createTagTypeDto.tagStateId,
     });
+
+    const tagTypeResult = await this.isExistTagTypeByBody(createTagTypeDto);
 
     return tagTypeResult;
   }
@@ -61,17 +70,18 @@ export class TagTypesService {
   }
 
   async updateTagType(id: number, updateTagTypeDto: UpdateTagTypeDto): Promise<TagTypes> {
-    const tagTypeFindById = await this.isExistTagType({
+    const tagTypeFindById = await this.isExistTagTypeById({
       relations: ['tagStateId'],
       where: { id },
     });
+    console.log(`update`, updateTagTypeDto);
 
     Object.assign(tagTypeFindById, updateTagTypeDto);
     return await this.repository.save(tagTypeFindById);
   }
 
   async removeTagType(id: number): Promise<string> {
-    const tagTypeFindById = await this.isExistTagType({ where: { id } });
+    const tagTypeFindById = await this.isExistTagTypeById({ where: { id } });
 
     await this.repository.remove(tagTypeFindById);
 
